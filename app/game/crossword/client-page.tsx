@@ -3,20 +3,18 @@
 import { useState, useRef, useEffect } from 'react';
 import * as XLSX from 'xlsx';
 
-const initialQuestionsData = [
-  { id: 1, question: 'Making no or very little noise.', answer: 'QUIET', letter: 'Q', key: 1 },
-  { id: 2, question: 'To agree with and give encouragement to someone or something because you want them to succeed.', answer: 'SUPPORT', letter: 'U', key: 2 },
-  { id: 3, question: 'A series of planned activities to achieve a particular social, commercial, or political goal.', answer: 'CAMPAIGN', letter: 'A', key: 2 },
-  { id: 4, question: 'A person who does work without being paid for it.', answer: 'VOLUNTEER', letter: 'L', key: 3 },
-  { id: 5, question: 'Your name written in your own characteristic way.', answer: 'SIGNATURE', letter: 'I', key: 2 },
-  { id: 6, question: 'An event where people gather to show strong objection to something.', answer: 'PROTEST', letter: 'T', key: 4 },
-  { id: 7, question: 'An acceptance that something exists or is true, especially one without proof.', answer: 'BELIEF', letter: 'I', key: 4 },
-  { id: 8, question: 'A formal request, typically one signed by many people, appealing to authority about a particular cause.', answer: 'PETITION', letter: 'E', key: 2 },
-  { id: 9, question: 'A formal plan or suggestion.', answer: 'PROPOSAL', letter: 'S', key: 6 },
-];
+interface Question {
+  id: number;
+  question: string;
+  answer: string;
+  letter: string;
+  key: number;
+}
+
+const initialQuestionsData: Question[] = [];
 
 export default function CrosswordClientPage() {
-  const [questions, setQuestions] = useState(initialQuestionsData);
+  const [questions, setQuestions] = useState<Question[]>(initialQuestionsData);
   const [selectedQuestionId, setSelectedQuestionId] = useState<number | null>(questions.length > 0 ? questions[0].id : null);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [inputValue, setInputValue] = useState('');
@@ -211,8 +209,16 @@ export default function CrosswordClientPage() {
           </div>
         ) : (
           <div className="text-center bg-white/80 p-10 rounded-3xl shadow-lg">
-            <h3 className="text-2xl font-bold text-slate-700">Welcome!</h3>
-            <p className="mt-2 text-slate-500">Please import a questions file to start the game.</p>
+            <h3 className="text-2xl font-bold text-slate-700 mb-6">Welcome to the Crossword Game!</h3>
+            <p className="mt-2 text-slate-500 mb-8">Please import a questions file to start, or export a template to create your own.</p>
+            <div className="mt-6 flex justify-center gap-4">
+              <button onClick={handleExportTemplate} className="bg-sky-100 text-sky-700 p-4 rounded-xl font-bold text-lg hover:bg-sky-200 transition-all border-b-4 border-sky-200 active:border-0 active:translate-y-1">
+                Export Template
+              </button>
+              <button onClick={triggerFileInput} className="bg-purple-100 text-purple-700 p-4 rounded-xl font-bold text-lg hover:bg-purple-200 transition-all border-b-4 border-purple-200 active:border-0 active:translate-y-1">
+                Import Questions
+              </button>
+            </div>
           </div>
         )}
       </div>
