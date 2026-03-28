@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import * as XLSX from 'xlsx';
 
-const questions = [
+const initialQuestionsData = [
   { id: 1, question: 'Making no or very little noise.', answer: 'QUIET', letter: 'Q', key: 1 },
   { id: 2, question: 'To agree with and give encouragement to someone or something because you want them to succeed.', answer: 'SUPPORT', letter: 'U', key: 2 },
   { id: 3, question: 'A series of planned activities to achieve a particular social, commercial, or political goal.', answer: 'CAMPAIGN', letter: 'A', key: 2 },
@@ -15,11 +16,13 @@ const questions = [
 ];
 
 export default function CrosswordClientPage() {
-  const [selectedQuestionId, setSelectedQuestionId] = useState<number | null>(questions[0].id);
+  const [questions, setQuestions] = useState(initialQuestionsData);
+  const [selectedQuestionId, setSelectedQuestionId] = useState<number | null>(questions.length > 0 ? questions[0].id : null);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [inputValue, setInputValue] = useState('');
   const [lastCorrectId, setLastCorrectId] = useState<number | null>(null);
   const [shakeInput, setShakeInput] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const selectedQuestion = questions.find((q) => q.id === selectedQuestionId);
   const currentIndex = questions.findIndex(q => q.id === selectedQuestionId);
@@ -28,7 +31,7 @@ export default function CrosswordClientPage() {
     if (selectedQuestion) {
       setInputValue(answers[selectedQuestion.id] || '');
     }
-  }, [selectedQuestionId, answers]);
+  }, [selectedQuestionId, answers, questions]); // Add questions to dependency array
 
   const handleSelectQuestion = (id: number) => {
     setSelectedQuestionId(id);
@@ -56,6 +59,50 @@ export default function CrosswordClientPage() {
     }
   };
 
+  const handleExportTemplate = () => {
+    const template = [
+      { id: 1, question: 'Your question here', answer: 'ANSWER', letter: 'A', key: 1 }
+    ];
+    const worksheet = XLSX.utils.json_to_sheet(template);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Questions');
+    XLSX.writeFile(workbook, 'questions_template.xlsx');
+  };
+
+  const handleImportQuestions = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const data = e.target?.result;
+          const workbook = XLSX.read(data, { type: 'binary' });
+          const sheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[sheetName];
+          const json = XLSX.utils.sheet_to_json(worksheet) as typeof initialQuestionsData;
+          
+          // Basic validation
+          if (json.length > 0 && 'id' in json[0] && 'question' in json[0] && 'answer' in json[0] && 'key' in json[0]) {
+            setQuestions(json);
+            setAnswers({});
+            setSelectedQuestionId(json[0].id);
+            setLastCorrectId(null);
+          } else {
+            alert('Invalid file format. Please use the exported template.');
+          }
+        } catch (error) {
+          console.error("Error reading Excel file:", error);
+          alert('There was an error processing the file.');
+        }
+      };
+      reader.readAsBinaryString(file);
+    }
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
+  };
+
   return (
     <div 
       className="flex h-screen bg-cover bg-center bg-no-repeat text-slate-800 font-sans p-4 gap-6 overflow-hidden transition-all duration-500"
@@ -69,6 +116,25 @@ export default function CrosswordClientPage() {
         <h2 className="text-2xl font-black mb-6 text-emerald-700 flex items-center gap-2">
           <span>🌈</span> QUEST LIST
         </h2>
+        
+        {/* --- START: Import/Export Buttons --- */}
+        <div className="mb-6 grid grid-cols-2 gap-3">
+            <button onClick={handleExportTemplate} className="bg-sky-100 text-sky-700 p-3 rounded-xl font-bold text-sm hover:bg-sky-200 transition-all border-b-4 border-sky-200 active:border-0 active:translate-y-1">
+              Export Template
+            </button>
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleImportQuestions}
+              className="hidden"
+              accept=".xlsx, .xls"
+            />
+            <button onClick={triggerFileInput} className="bg-purple-100 text-purple-700 p-3 rounded-xl font-bold text-sm hover:bg-purple-200 transition-all border-b-4 border-purple-200 active:border-0 active:translate-y-1">
+              Import Questions
+            </button>
+        </div>
+        {/* --- END: Import/Export Buttons --- */}
+
         <div className="grid grid-cols-1 gap-4">
           {questions.map((q) => (
             <button
@@ -97,7 +163,7 @@ export default function CrosswordClientPage() {
 
       {/* Middle Content: Main Interaction */}
       <div className="flex-1 flex flex-col items-center justify-center relative z-10">
-        {selectedQuestion && (
+        {selectedQuestion ? (
           <div className="w-full max-w-xl animate-pop-in">
             <div className={`bg-white/90 backdrop-blur-lg p-10 rounded-[40px] shadow-2xl border-t-8 border-yellow-400 transition-transform ${shakeInput ? 'animate-shake' : ''}`}>
               <div className="mb-8 text-center">
@@ -142,6 +208,11 @@ export default function CrosswordClientPage() {
                 </div>
               </form>
             </div>
+          </div>
+        ) : (
+          <div className="text-center bg-white/80 p-10 rounded-3xl shadow-lg">
+            <h3 className="text-2xl font-bold text-slate-700">Welcome!</h3>
+            <p className="mt-2 text-slate-500">Please import a questions file to start the game.</p>
           </div>
         )}
       </div>
