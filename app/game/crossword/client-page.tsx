@@ -225,9 +225,37 @@ export default function CrosswordClientPage() {
 
       {/* Right Vertical: The Word Builder */}
       <div className="w-1/3 bg-white/80 backdrop-blur-md p-8 rounded-[32px] shadow-2xl border-4 border-white/50 flex flex-col items-center overflow-y-auto z-10">
-        <h2 className="text-xl font-black mb-8 text-emerald-700 uppercase tracking-widest border-b-4 border-yellow-200 pb-2 flex items-center gap-2">
+        <h2 className="text-xl font-black mb-4 text-emerald-700 uppercase tracking-widest border-b-4 border-yellow-200 pb-2 flex items-center gap-2">
           <span>☀️</span> NATURE KEY
         </h2>
+
+        {/* Horizontal Target Word */}
+        {questions.length > 0 && (
+          <div className="flex flex-wrap justify-center gap-2 mb-2 w-full">
+            {questions.map((q) => {
+              const isCorrect = !!answers[q.id];
+              const char = q.answer[q.key - 1];
+              const shouldAnimate = lastCorrectId === q.id;
+              
+              return (
+                <span
+                  key={`target-${q.id}`}
+                  className={`
+                    text-4xl font-black transition-all duration-500 uppercase
+                    ${isCorrect 
+                      ? 'text-amber-500 scale-110 drop-shadow-md' 
+                      : 'text-emerald-200/80'}
+                  `}
+                >
+                  <span className={shouldAnimate ? 'animate-char-appear inline-block' : 'inline-block'}>
+                    {isCorrect ? char : '_'}
+                  </span>
+                </span>
+              );
+            })}
+          </div>
+        )}
+
         <div className="flex flex-col gap-2 w-full">
           {questions.map((q) => {
             const isCorrect = !!answers[q.id];
