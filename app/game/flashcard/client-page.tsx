@@ -115,6 +115,20 @@ export default function FlashcardClientPage() {
     setIsFlipped(false);
   };
 
+  const shuffleDeck = useCallback(() => {
+    setFlashcards((prev) => {
+      if (prev.length < 2) return prev;
+      const next = [...prev];
+      for (let i = next.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [next[i], next[j]] = [next[j], next[i]];
+      }
+      return next;
+    });
+    setCurrentIndex(0);
+    setIsFlipped(false);
+  }, []);
+
   const currentCard = flashcards[currentIndex];
 
   useEffect(() => {
@@ -346,12 +360,22 @@ export default function FlashcardClientPage() {
               </div>
             </div>
 
-            <div className="mt-12 flex space-x-6">
+            <div className="mt-12 flex flex-wrap items-center justify-center gap-4 sm:gap-6">
               <button
                 onClick={handlePrev}
                 className="w-32 bg-amber-100 hover:bg-amber-200 text-amber-600 font-black py-4 rounded-2xl transition-all border-b-4 border-amber-300 active:border-0 active:translate-y-1 text-xl flex items-center justify-center gap-2 shadow-sm"
               >
                 <span>←</span> PREV
+              </button>
+              <button
+                type="button"
+                onClick={shuffleDeck}
+                disabled={flashcards.length < 2}
+                className="w-32 bg-violet-100 hover:bg-violet-200 text-violet-700 font-black py-4 rounded-2xl transition-all border-b-4 border-violet-200 active:border-0 active:translate-y-1 text-lg flex items-center justify-center gap-2 shadow-sm disabled:pointer-events-none disabled:opacity-40"
+                title="Shuffle deck"
+                aria-label="Shuffle deck"
+              >
+                <span aria-hidden></span> RANDOM
               </button>
               <button
                 onClick={handleNext}
