@@ -7,7 +7,7 @@ interface Flashcard {
   id: number;
   description?: string;
   english_meaning: string;
-  vietnamese_meaning: string;
+  vietnamese_meaning?: string;
   image_url?: string;
   /** IPA phonetic; optional — fetched from dictionary if empty */
   phonetic?: string;
@@ -50,7 +50,6 @@ export default function FlashcardClientPage() {
       {
         id: 2,
         english_meaning: "Hello",
-        vietnamese_meaning: "Xin chào",
       },
     ];
     const worksheet = XLSX.utils.json_to_sheet(template);
@@ -76,11 +75,11 @@ export default function FlashcardClientPage() {
               id: row.id,
               description: normalizeCell(row.description),
               english_meaning: normalizeCell(row.english_meaning) ?? "",
-              vietnamese_meaning: normalizeCell(row.vietnamese_meaning) ?? "",
+              vietnamese_meaning: normalizeCell(row.vietnamese_meaning),
               image_url: normalizeCell(row.image_url),
               phonetic: normalizeCell(row.phonetic),
             }))
-            .filter((c) => c.english_meaning && c.vietnamese_meaning);
+            .filter((c) => c.english_meaning);
 
           if (formattedData.length > 0) {
             setFlashcards(formattedData);
@@ -88,7 +87,7 @@ export default function FlashcardClientPage() {
             setIsFlipped(false);
           } else {
             alert(
-              "Invalid file: each row needs english_meaning and vietnamese_meaning. Description, image_url, and phonetic are optional."
+              "Invalid file: each row needs english_meaning. vietnamese_meaning, description, image_url, and phonetic are optional."
             );
           }
         } catch (error) {
@@ -176,12 +175,6 @@ export default function FlashcardClientPage() {
         {flashcards.length === 0 ? (
           <div className="text-center bg-white/80 backdrop-blur-md p-10 rounded-[40px] shadow-2xl border-t-8 border-yellow-400">
             <h3 className="text-3xl font-black text-emerald-700 mb-6">Welcome to the Flashcard Game!</h3>
-            <p className="mt-2 text-slate-500 mb-8 max-w-md mx-auto font-medium">
-              Import an Excel file to start, or export the template. Each row needs{" "}
-              <strong>english_meaning</strong> and <strong>vietnamese_meaning</strong>;{" "}
-              <strong>description</strong>, <strong>image_url</strong>, and{" "}
-              <strong>phonetic</strong> are optional.
-            </p>
             <div className="mt-6 flex justify-center gap-4">
               <button 
                 onClick={handleExportTemplate} 
@@ -205,7 +198,7 @@ export default function FlashcardClientPage() {
             </div>
           </div>
         ) : (
-          <div className="w-full justify-center flex flex-col items-center mx-auto max-w-4xl relative">
+          <div className="w-full justify-center flex flex-col items-center mx-auto max-w-6xl relative">
             <div className="absolute -top-3 right-0 p-4">
                <input
                 type="file"
@@ -229,7 +222,7 @@ export default function FlashcardClientPage() {
             </div>
 
             <div
-              className="w-full max-w-2xl h-80 min-h-[320px] perspective-1000 cursor-pointer animate-pop-in"
+              className="w-full max-w-4xl min-h-[22rem] h-[min(32rem,calc(100svh-12rem))] sm:min-h-[26rem] perspective-1000 cursor-pointer animate-pop-in"
               onClick={() => setIsFlipped(!isFlipped)}
             >
               <div
@@ -238,38 +231,53 @@ export default function FlashcardClientPage() {
                 }`}
               >
                 {/* FRONT */}
-                <div className="absolute w-full h-full backface-hidden flex items-center justify-center bg-white/95 backdrop-blur-lg rounded-[40px] shadow-2xl border-t-8 border-yellow-400 p-8 text-center">
-                  <div className="flex flex-col items-center justify-center w-full h-full">
+                <div className="absolute w-full h-full backface-hidden flex items-center justify-center bg-white/95 backdrop-blur-lg rounded-[40px] shadow-2xl border-t-8 border-yellow-400 p-10 sm:p-12 text-center">
+                  <div className="flex h-full w-full min-h-0 flex-col items-stretch">
                     {currentCard.image_url ? (
-                      <div className="flex-1 flex items-center justify-center min-h-0 mb-4 w-full">
-                        <img
-                          src={currentCard.image_url}
-                          alt="Flashcard visual"
-                          className="max-h-full max-w-full object-contain rounded-2xl shadow-inner border-2 border-slate-100"
-                        />
-                      </div>
-                    ) : null}
-                    <div>
-                      {currentCard.description ? (
-                        <h2
-                          className={`${currentCard.image_url ? "text-2xl" : "text-3xl"} font-bold text-slate-800 leading-snug drop-shadow-sm`}
-                        >
-                          {currentCard.description}
-                        </h2>
-                      ) : (
-                        <p className="text-3xl font-bold text-slate-400">
-                          (No description)
+                      <>
+                        <div className="flex min-h-0 flex-1 items-center justify-center">
+                          <img
+                            src={currentCard.image_url}
+                            alt="Flashcard visual"
+                            className="h-full w-full max-h-full max-w-full object-contain rounded-3xl shadow-inner border-2 border-slate-100"
+                          />
+                        </div>
+                        <div className="shrink-0 pt-3 sm:pt-4">
+                          {currentCard.description ? (
+                            <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 leading-snug drop-shadow-sm">
+                              {currentCard.description}
+                            </h2>
+                          ) : (
+                            <p className="text-xl sm:text-2xl font-bold text-slate-400">
+                              (No description)
+                            </p>
+                          )}
+                          <p className="mt-2 text-sky-500 font-bold uppercase tracking-wider text-xs sm:text-sm flex items-center justify-center gap-2">
+                            <span>👆</span> Tap to flip
+                          </p>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="flex flex-1 flex-col items-center justify-center">
+                        {currentCard.description ? (
+                          <h2 className="text-3xl sm:text-4xl font-bold text-slate-800 leading-snug drop-shadow-sm">
+                            {currentCard.description}
+                          </h2>
+                        ) : (
+                          <p className="text-3xl sm:text-4xl font-bold text-slate-400">
+                            (No description)
+                          </p>
+                        )}
+                        <p className="mt-4 text-sky-500 font-bold uppercase tracking-wider text-sm flex items-center justify-center gap-2">
+                          <span>👆</span> Tap to flip
                         </p>
-                      )}
-                      <p className="mt-4 text-sky-500 font-bold uppercase tracking-wider text-sm flex items-center justify-center gap-2">
-                        <span>👆</span> Tap to flip
-                      </p>
-                    </div>
+                      </div>
+                    )}
                   </div>
                 </div>
 
                 {/* BACK */}
-                <div className="absolute w-full h-full backface-hidden rotate-y-180 flex flex-col items-center justify-center bg-emerald-50 backdrop-blur-lg rounded-[40px] shadow-2xl border-t-8 border-emerald-500 p-8 text-center text-emerald-900 border-b-8 border-b-emerald-200">
+                <div className="absolute w-full h-full backface-hidden rotate-y-180 flex flex-col items-center justify-center bg-emerald-50 backdrop-blur-lg rounded-[40px] shadow-2xl border-t-8 border-emerald-500 p-10 sm:p-12 text-center text-emerald-900 border-b-8 border-b-emerald-200">
                   <button
                     type="button"
                     onClick={handleSpeak}
@@ -298,14 +306,14 @@ export default function FlashcardClientPage() {
                       />
                     </svg>
                   </button>
-                  <div className="mb-4 w-full max-w-md">
+                  <div className="mb-4 w-full max-w-2xl">
                     <span className="text-emerald-600/70 font-black uppercase tracking-widest text-xs block mb-2">
                       English
                     </span>
-                    <h2 className="text-4xl font-black bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">
+                    <h2 className="text-4xl sm:text-5xl font-black bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">
                       {currentCard.english_meaning}
                     </h2>
-                    <div className="mt-3 min-h-[1.5rem] text-lg font-mono text-emerald-700/90">
+                    <div className="mt-3 min-h-[1.5rem] text-lg sm:text-xl font-mono text-emerald-700/90">
                       {phoneticLoading && !displayPhonetic ? (
                         <span className="text-sm font-sans text-emerald-600/60">
                           Looking up phonetic…
@@ -324,8 +332,14 @@ export default function FlashcardClientPage() {
                     <span className="text-emerald-600/70 font-black uppercase tracking-widest text-xs block mb-2">
                       Vietnamese
                     </span>
-                    <h3 className="text-2xl font-bold text-emerald-800">
-                      {currentCard.vietnamese_meaning}
+                    <h3 className="text-2xl sm:text-3xl font-bold text-emerald-800">
+                      {currentCard.vietnamese_meaning ? (
+                        currentCard.vietnamese_meaning
+                      ) : (
+                        <span className="text-emerald-600/45 font-medium">
+                          No translation
+                        </span>
+                      )}
                     </h3>
                   </div>
                 </div>
