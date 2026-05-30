@@ -1,0 +1,42 @@
+{
+  "home": {
+    "title": "Moli Teaching Games 🌈",
+    "crossword": "Crossword",
+    "audioloop": "Audioloop",
+    "flashcard": "Flashcards",
+    "definition": "Definition"
+  },
+  "crossword": {
+    "quest_list": "Quest List",
+    "export_template": "Export Template",
+    "import_questions": "Import Questions",
+    "mission": "Mission",
+    "step": "Step",
+    "answer_placeholder": "ANSWER HERE...",
+    "go": "GO! 🚀",
+    "hint": "Hint 💡",
+    "next": "EXCELLENT! NEXT ONE ✨",
+    "welcome_title": "Welcome to the Crossword Game!",
+    "welcome_desc": "Please import a questions file to start, or export a template to create your own.",
+    "nature_key": "Nature Key",
+    "invalid_format": "Invalid file format. Please use the exported template.",
+    "file_error": "There was an error processing the file."
+  },
+  "definition": {
+    "quest_list": "Quest List",
+    "export_template": "Export Template",
+    "import_questions": "Import Questions",
+    "mission": "Mission",
+    "step": "Step",
+    "answer_placeholder": "ANSWER HERE...",
+    "go": "GO! 🚀",
+    "hint": "Hint 💡",
+    "next": "EXCELLENT! NEXT ONE ✨",
+    "correct_answers": "Correct Answers",
+    "welcome_title": "Welcome to the Definition Game!",
+    "welcome_desc": "Please import a questions file to start, or export a template to create your own.",
+    "no_answers": "No correct answers yet. Keep going! 🚀",
+    "invalid_format": "Invalid file format. Please use the exported template.",
+    "file_error": "There was an error processing the file."
+  }
+}

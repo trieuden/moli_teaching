@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import * as XLSX from 'xlsx';
+import { useTranslation } from 'react-i18next';
 
 interface Question {
   id: number;
@@ -14,6 +15,7 @@ interface Question {
 const initialQuestionsData: Question[] = [];
 
 export default function CrosswordClientPage() {
+  const { t } = useTranslation('game');
   const [questions, setQuestions] = useState<Question[]>(initialQuestionsData);
   const [selectedQuestionId, setSelectedQuestionId] = useState<number | null>(questions.length > 0 ? questions[0].id : null);
   const [answers, setAnswers] = useState<Record<number, string>>({});
@@ -48,6 +50,7 @@ export default function CrosswordClientPage() {
     } else {
       setShakeInput(true);
       setTimeout(() => setShakeInput(false), 300);
+      new Audio('/voice/freesound_community-wrong-47985.mp3').play().catch(() => {});
     }
   };
 
@@ -86,11 +89,11 @@ export default function CrosswordClientPage() {
             setSelectedQuestionId(json[0].id);
             setLastCorrectId(null);
           } else {
-            alert('Invalid file format. Please use the exported template.');
+            alert(t('crossword.invalid_format'));
           }
         } catch (error) {
           console.error("Error reading Excel file:", error);
-          alert('There was an error processing the file.');
+          alert(t('crossword.file_error'));
         }
       };
       reader.readAsBinaryString(file);
@@ -112,13 +115,13 @@ export default function CrosswordClientPage() {
       {/* Left Menu: Question Cards */}
       <div className="w-1/4 bg-white/80 backdrop-blur-md p-6 rounded-[32px] shadow-2xl border-4 border-white/50 overflow-y-auto z-10">
         <h2 className="text-2xl font-black mb-6 text-emerald-700 flex items-center gap-2">
-          <span>🌈</span> QUEST LIST
+          <span>🌈</span> {t('crossword.quest_list').toUpperCase()}
         </h2>
         
         {/* --- START: Import/Export Buttons --- */}
         <div className="mb-6 grid grid-cols-2 gap-3">
             <button onClick={handleExportTemplate} className="bg-sky-100 text-sky-700 p-3 rounded-xl font-bold text-sm hover:bg-sky-200 transition-all border-b-4 border-sky-200 active:border-0 active:translate-y-1">
-              Export Template
+              {t('crossword.export_template')}
             </button>
             <input
               type="file"
@@ -128,7 +131,7 @@ export default function CrosswordClientPage() {
               accept=".xlsx, .xls"
             />
             <button onClick={triggerFileInput} className="bg-purple-100 text-purple-700 p-3 rounded-xl font-bold text-sm hover:bg-purple-200 transition-all border-b-4 border-purple-200 active:border-0 active:translate-y-1">
-              Import Questions
+              {t('crossword.import_questions')}
             </button>
         </div>
         {/* --- END: Import/Export Buttons --- */}
@@ -151,7 +154,7 @@ export default function CrosswordClientPage() {
                 <span className={`w-8 h-8 flex items-center justify-center rounded-full font-bold ${selectedQuestionId === q.id ? 'bg-white text-emerald-500' : 'bg-emerald-100 text-emerald-600'}`}>
                   {q.id}
                 </span>
-                <span className="font-bold uppercase tracking-tight">Mission</span>
+                <span className="font-bold uppercase tracking-tight">{t('crossword.mission')}</span>
                 {answers[q.id] && <span className="absolute right-2 top-2 animate-bounce">🌻</span>}
               </div>
             </button>
@@ -166,7 +169,7 @@ export default function CrosswordClientPage() {
             <div className={`bg-white/90 backdrop-blur-lg p-10 rounded-[40px] shadow-2xl border-t-8 border-yellow-400 transition-transform ${shakeInput ? 'animate-shake' : ''}`}>
               <div className="mb-8 text-center">
                 <span className="bg-sky-100 text-sky-700 px-4 py-1 rounded-full font-bold text-sm tracking-wider uppercase border border-sky-200">
-                  Step {selectedQuestion.id} / {questions.length}
+                  {t('crossword.step')} {selectedQuestion.id} / {questions.length}
                 </span>
                 <h2 className="text-3xl font-bold mt-6 text-slate-800 leading-snug drop-shadow-sm">
                    {selectedQuestion.question}
@@ -179,7 +182,7 @@ export default function CrosswordClientPage() {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   className="w-full bg-sky-50/50 border-4 border-sky-100 p-6 rounded-3xl text-2xl text-center font-black text-emerald-600 focus:border-yellow-400 focus:bg-white focus:outline-none transition-all placeholder:text-slate-300 uppercase tracking-[0.2em]"
-                  placeholder="ANSWER HERE..."
+                  placeholder={t('crossword.answer_placeholder')}
                   autoFocus
                   disabled={!!answers[selectedQuestion.id]}
                 />
@@ -188,10 +191,10 @@ export default function CrosswordClientPage() {
                   {!answers[selectedQuestion.id] ? (
                     <div className="flex gap-4">
                       <button type="submit" className="flex-1 bg-emerald-500 hover:bg-emerald-400 text-white font-black py-5 rounded-2xl transition-all shadow-[0_6px_0_rgb(5,150,105)] active:shadow-none active:translate-y-1 text-xl">
-                        GO! 🚀
+                        {t('crossword.go')}
                       </button>
                       <button type="button" onClick={handleShowAnswer} className="px-8 bg-amber-100 hover:bg-amber-200 text-amber-600 font-bold py-5 rounded-2xl transition-all border-b-4 border-amber-300 active:border-0 active:translate-y-1">
-                        Hint 💡
+                        {t('crossword.hint')}
                       </button>
                     </div>
                   ) : (
@@ -200,7 +203,7 @@ export default function CrosswordClientPage() {
                       onClick={handleNext} 
                       className="w-full bg-sky-500 hover:bg-sky-400 text-white font-black py-5 rounded-2xl transition-all shadow-[0_6px_0_rgb(14,165,233)] active:shadow-none active:translate-y-1 text-xl flex items-center justify-center gap-3 animate-pop-in"
                     >
-                      EXCELLENT! NEXT ONE ✨ <span>→</span>
+                      {t('crossword.next')} <span>→</span>
                     </button>
                   )}
                 </div>
@@ -209,14 +212,14 @@ export default function CrosswordClientPage() {
           </div>
         ) : (
           <div className="text-center bg-white/80 p-10 rounded-3xl shadow-lg">
-            <h3 className="text-2xl font-bold text-slate-700 mb-6">Welcome to the Crossword Game!</h3>
-            <p className="mt-2 text-slate-500 mb-8">Please import a questions file to start, or export a template to create your own.</p>
+            <h3 className="text-2xl font-bold text-slate-700 mb-6">{t('crossword.welcome_title')}</h3>
+            <p className="mt-2 text-slate-500 mb-8">{t('crossword.welcome_desc')}</p>
             <div className="mt-6 flex justify-center gap-4">
               <button onClick={handleExportTemplate} className="bg-sky-100 text-sky-700 p-4 rounded-xl font-bold text-lg hover:bg-sky-200 transition-all border-b-4 border-sky-200 active:border-0 active:translate-y-1">
-                Export Template
+                {t('crossword.export_template')}
               </button>
               <button onClick={triggerFileInput} className="bg-purple-100 text-purple-700 p-4 rounded-xl font-bold text-lg hover:bg-purple-200 transition-all border-b-4 border-purple-200 active:border-0 active:translate-y-1">
-                Import Questions
+                {t('crossword.import_questions')}
               </button>
             </div>
           </div>
@@ -226,7 +229,7 @@ export default function CrosswordClientPage() {
       {/* Right Vertical: The Word Builder */}
       <div className="w-1/3 bg-white/80 backdrop-blur-md p-8 rounded-[32px] shadow-2xl border-4 border-white/50 flex flex-col items-center overflow-y-auto z-10">
         <h2 className="text-xl font-black mb-4 text-emerald-700 uppercase tracking-widest border-b-4 border-yellow-200 pb-2 flex items-center gap-2">
-          <span>☀️</span> NATURE KEY
+          <span>☀️</span> {t('crossword.nature_key').toUpperCase()}
         </h2>
 
         {/* Horizontal Target Word */}

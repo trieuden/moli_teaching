@@ -1,0 +1,42 @@
+{
+  "home": {
+    "title": "Moli Teaching Games 🌈",
+    "crossword": "Crossword",
+    "audioloop": "Audioloop",
+    "flashcard": "Flashcards",
+    "definition": "Definition"
+  },
+  "crossword": {
+    "quest_list": "Danh sách câu hỏi",
+    "export_template": "Xuất mẫu",
+    "import_questions": "Nhập câu hỏi",
+    "mission": "Câu hỏi",
+    "step": "Bước",
+    "answer_placeholder": "NHẬP ĐÁP ÁN...",
+    "go": "ĐI! 🚀",
+    "hint": "Gợi ý 💡",
+    "next": "TUYỆT VỜI! TIẾP THEO ✨",
+    "welcome_title": "Chào mừng đến với Crossword!",
+    "welcome_desc": "Hãy nhập file câu hỏi để bắt đầu, hoặc xuất mẫu để tạo câu hỏi của riêng bạn.",
+    "nature_key": "Từ khóa",
+    "invalid_format": "Định dạng file không hợp lệ. Vui lòng dùng mẫu đã xuất.",
+    "file_error": "Có lỗi xử lý file."
+  },
+  "definition": {
+    "quest_list": "Danh sách câu hỏi",
+    "export_template": "Xuất mẫu",
+    "import_questions": "Nhập câu hỏi",
+    "mission": "Câu hỏi",
+    "step": "Bước",
+    "answer_placeholder": "NHẬP ĐÁP ÁN...",
+    "go": "ĐI! 🚀",
+    "hint": "Gợi ý 💡",
+    "next": "TUYỆT VỜI! TIẾP THEO ✨",
+    "correct_answers": "Đáp án đúng",
+    "welcome_title": "Chào mừng đến với Definition Game!",
+    "welcome_desc": "Hãy nhập file câu hỏi để bắt đầu, hoặc xuất mẫu để tạo câu hỏi của riêng bạn.",
+    "no_answers": "Chưa có đáp án đúng. Tiếp tục nào! 🚀",
+    "invalid_format": "Định dạng file không hợp lệ. Vui lòng dùng mẫu đã xuất.",
+    "file_error": "Có lỗi xử lý file."
+  }
+}
