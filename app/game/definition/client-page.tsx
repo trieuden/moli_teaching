@@ -7,18 +7,17 @@ interface Question {
   id: number;
   question: string;
   answer: string;
-  letter: string;
-  key: number;
+  letter?: string;
+  key?: number;
 }
 
 const initialQuestionsData: Question[] = [];
 
-export default function CrosswordClientPage() {
+export default function DefinitionClientPage() {
   const [questions, setQuestions] = useState<Question[]>(initialQuestionsData);
   const [selectedQuestionId, setSelectedQuestionId] = useState<number | null>(questions.length > 0 ? questions[0].id : null);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [inputValue, setInputValue] = useState('');
-  const [lastCorrectId, setLastCorrectId] = useState<number | null>(null);
   const [shakeInput, setShakeInput] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -29,7 +28,7 @@ export default function CrosswordClientPage() {
     if (selectedQuestion) {
       setInputValue(answers[selectedQuestion.id] || '');
     }
-  }, [selectedQuestionId, answers, questions]); // Add questions to dependency array
+  }, [selectedQuestionId, answers, questions]);
 
   const handleSelectQuestion = (id: number) => {
     setSelectedQuestionId(id);
@@ -44,7 +43,6 @@ export default function CrosswordClientPage() {
     e.preventDefault();
     if (selectedQuestion && inputValue.toUpperCase().trim() === selectedQuestion.answer.toUpperCase().trim()) {
       setAnswers((prev) => ({ ...prev, [selectedQuestion.id]: selectedQuestion.answer.toUpperCase().trim() }));
-      setLastCorrectId(selectedQuestion.id);
     } else {
       setShakeInput(true);
       setTimeout(() => setShakeInput(false), 300);
@@ -59,12 +57,12 @@ export default function CrosswordClientPage() {
 
   const handleExportTemplate = () => {
     const template = [
-      { id: 1, question: 'Your question here', answer: 'ANSWER', letter: 'A', key: 1 }
+      { id: 1, question: 'Your question here', answer: 'ANSWER' }
     ];
     const worksheet = XLSX.utils.json_to_sheet(template);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Questions');
-    XLSX.writeFile(workbook, 'questions_template.xlsx');
+    XLSX.writeFile(workbook, 'definition_template.xlsx');
   };
 
   const handleImportQuestions = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,11 +78,10 @@ export default function CrosswordClientPage() {
           const json = XLSX.utils.sheet_to_json(worksheet) as typeof initialQuestionsData;
           
           // Basic validation
-          if (json.length > 0 && 'id' in json[0] && 'question' in json[0] && 'answer' in json[0] && 'key' in json[0]) {
+          if (json.length > 0 && 'id' in json[0] && 'question' in json[0] && 'answer' in json[0]) {
             setQuestions(json);
             setAnswers({});
             setSelectedQuestionId(json[0].id);
-            setLastCorrectId(null);
           } else {
             alert('Invalid file format. Please use the exported template.');
           }
@@ -104,7 +101,7 @@ export default function CrosswordClientPage() {
   return (
     <div 
       className="flex h-screen bg-cover bg-center bg-no-repeat text-slate-800 font-sans p-4 gap-6 overflow-hidden transition-all duration-500"
-      style={{ backgroundImage: "url('/images/bg_crossword.jpg')" }} // Đã thêm ảnh nền
+      style={{ backgroundImage: "url('/images/bg_crossword.jpg')" }}
     >
       {/* Overlay nhẹ để tăng tương phản chữ */}
       <div className="absolute inset-0 bg-white/10 pointer-events-none" />
@@ -209,7 +206,7 @@ export default function CrosswordClientPage() {
           </div>
         ) : (
           <div className="text-center bg-white/80 p-10 rounded-3xl shadow-lg">
-            <h3 className="text-2xl font-bold text-slate-700 mb-6">Welcome to the Crossword Game!</h3>
+            <h3 className="text-2xl font-bold text-slate-700 mb-6">Welcome to the Definition Game!</h3>
             <p className="mt-2 text-slate-500 mb-8">Please import a questions file to start, or export a template to create your own.</p>
             <div className="mt-6 flex justify-center gap-4">
               <button onClick={handleExportTemplate} className="bg-sky-100 text-sky-700 p-4 rounded-xl font-bold text-lg hover:bg-sky-200 transition-all border-b-4 border-sky-200 active:border-0 active:translate-y-1">
@@ -223,72 +220,32 @@ export default function CrosswordClientPage() {
         )}
       </div>
 
-      {/* Right Vertical: The Word Builder */}
+      {/* Right Vertical: Correct Answers List */}
       <div className="w-1/3 bg-white/80 backdrop-blur-md p-8 rounded-[32px] shadow-2xl border-4 border-white/50 flex flex-col items-center overflow-y-auto z-10">
-        <h2 className="text-xl font-black mb-4 text-emerald-700 uppercase tracking-widest border-b-4 border-yellow-200 pb-2 flex items-center gap-2">
-          <span>☀️</span> NATURE KEY
+        <h2 className="text-xl font-black mb-4 text-emerald-700 uppercase tracking-widest border-b-4 border-emerald-200 pb-2 flex items-center gap-2">
+          <span>🎯</span> CORRECT ANSWERS
         </h2>
 
-        {/* Horizontal Target Word */}
-        {questions.length > 0 && (
-          <div className="flex flex-wrap justify-center gap-2 mb-2 w-full">
-            {questions.map((q) => {
-              const isCorrect = !!answers[q.id];
-              const char = q.answer[q.key - 1];
-              const shouldAnimate = lastCorrectId === q.id;
-              
-              return (
-                <span
-                  key={`target-${q.id}`}
-                  className={`
-                    text-4xl font-black transition-all duration-500 uppercase
-                    ${isCorrect 
-                      ? 'text-amber-500 scale-110 drop-shadow-md' 
-                      : 'text-emerald-200/80'}
-                  `}
-                >
-                  <span className={shouldAnimate ? 'animate-char-appear inline-block' : 'inline-block'}>
-                    {isCorrect ? char : '_'}
-                  </span>
+        <div className="flex flex-col gap-4 w-full mt-4">
+          {questions.filter(q => answers[q.id]).map((q) => (
+            <div key={`ans-${q.id}`} className="bg-emerald-50/80 border-2 border-emerald-200 p-5 rounded-2xl shadow-sm animate-pop-in transition-all hover:scale-[1.02]">
+              <p className="text-sm font-bold text-emerald-600 mb-2 flex items-center gap-2">
+                <span className="w-6 h-6 rounded-full bg-emerald-200 flex items-center justify-center text-xs">
+                  {q.id}
                 </span>
-              );
-            })}
-          </div>
-        )}
-
-        <div className="flex flex-col gap-2 w-full">
-          {questions.map((q) => {
-            const isCorrect = !!answers[q.id];
-            const char = q.answer[q.key - 1];
-            const shouldAnimate = lastCorrectId === q.id;
-
-            return (
-              <div key={`grid-${q.id}`} className="grid grid-cols-[1fr_60px_1fr] items-center gap-2 w-full">
-                <span className={`text-right font-bold text-lg transition-all duration-700 ${isCorrect ? 'text-emerald-600' : 'text-transparent'}`}>
-                  {q.answer.slice(0, q.key - 1)}
-                </span>
-
-                <div
-                  className={`
-                    w-14 h-14 flex items-center justify-center 
-                    border-4 rounded-2xl transition-all transform shadow-md
-                    ${isCorrect 
-                      ? 'border-yellow-400 bg-yellow-50 text-amber-600 scale-105 rotate-0 shadow-yellow-200' 
-                      : 'border-white bg-white/40 text-emerald-200 -rotate-3'}
-                    text-3xl font-black
-                  `}
-                >
-                  <span className={shouldAnimate ? 'animate-char-appear' : ''}>
-                    {isCorrect ? char : '?'}
-                  </span>
-                </div>
-
-                <span className={`text-left font-bold text-lg transition-all duration-700 ${isCorrect ? 'text-emerald-600' : 'text-transparent'}`}>
-                  {q.answer.slice(q.key)}
-                </span>
+                Mission {q.id}
+              </p>
+              <p className="text-slate-800 font-semibold mb-3 leading-relaxed">{q.question}</p>
+              <div className="bg-white px-4 py-2 rounded-xl border-2 border-yellow-300 inline-block shadow-sm">
+                <span className="font-black text-amber-500 uppercase tracking-widest">{q.answer}</span>
               </div>
-            );
-          })}
+            </div>
+          ))}
+          {questions.filter(q => answers[q.id]).length === 0 && (
+            <div className="text-center text-slate-500 mt-10 italic bg-white/50 p-6 rounded-2xl border border-dashed border-slate-300">
+              No correct answers yet. Keep going! 🚀
+            </div>
+          )}
         </div>
       </div>
     </div>

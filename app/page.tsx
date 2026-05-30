@@ -31,7 +31,13 @@ export default function Home() {
             className="px-10 py-5 text-xl font-black text-white bg-emerald-500 rounded-2xl shadow-[0_6px_0_rgb(16,185,129)] hover:bg-emerald-400 transition-all active:shadow-none active:translate-y-1"
           >
             Flashcards
-          </Link>          
+          </Link>
+          <Link 
+            href="/game/definition" 
+            className="px-10 py-5 text-xl font-black text-white bg-amber-500 rounded-2xl shadow-[0_6px_0_rgb(245,158,11)] hover:bg-amber-400 transition-all active:shadow-none active:translate-y-1"
+          >
+            Definition
+          </Link>
         </div>
       </main>
     </div>
