@@ -9,6 +9,7 @@ export function middleware(request: NextRequest) {
     pathname.startsWith("/_next/") ||
     pathname.startsWith("/images/") ||
     pathname.startsWith("/voice/") ||
+    pathname.startsWith("/audio/") ||
     pathname.startsWith("/locales/") ||
     pathname === "/favicon.ico"
   ) {
@@ -53,5 +54,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|images|locales).*)"],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|images|voice|audio|locales).*)"],
 };

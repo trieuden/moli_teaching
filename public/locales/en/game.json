@@ -4,7 +4,8 @@
     "crossword": "Crossword",
     "audioloop": "Audioloop",
     "flashcard": "Flashcards",
-    "definition": "Definition"
+    "definition": "Definition",
+    "random_word": "Random Word"
   },
   "crossword": {
     "quest_list": "Quest List",
@@ -38,5 +39,30 @@
     "no_answers": "No correct answers yet. Keep going! 🚀",
     "invalid_format": "Invalid file format. Please use the exported template.",
     "file_error": "There was an error processing the file."
+  },
+  "random_word": {
+    "random_word": "Random Word",
+    "export_template": "Export Template",
+    "import_questions": "Import Data",
+    "start": "Start",
+    "restart": "Restart",
+    "welcome_title": "Random Word Game!",
+    "welcome_desc": "Please import an Excel file to start, or export a template to create your own.",
+    "invalid_format": "Invalid file format. Please use the exported template.",
+    "file_error": "There was an error processing the file.",
+    "question": "Question",
+    "step": "Step",
+    "select_definition": "Select the correct definition for: ",
+    "select_type": "Select the correct word type for: ",
+    "select_vn_meaning": "Select the correct Vietnamese meaning for: ",
+    "input_word_from_vn": "Type the English word that means: ",
+    "input_word_from_def": "Type the word with the definition: ",
+    "answer_placeholder": "TYPE WORD...",
+    "submit": "SUBMIT 🚀",
+    "next": "EXCELLENT! NEXT ONE ✨",
+    "correct": "Correct!",
+    "wrong": "Wrong, try again!",
+    "score": "Score",
+    "finish": "Finished! You answered all correctly."
   }
 }

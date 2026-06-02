@@ -21,30 +21,36 @@ export default function Home() {
         <h1 className="text-4xl font-black text-emerald-700 tracking-wider">
           {t('home.title')}
         </h1>
-        <div className="flex gap-6">
+        <div className="flex gap-6 flex-wrap justify-center">
           <Link
             href={`/${locale}/game/crossword`}
-            className="px-10 py-5 text-xl font-black text-white bg-sky-500 rounded-2xl shadow-[0_6px_0_rgb(14,165,233)] hover:bg-sky-400 transition-all active:shadow-none active:translate-y-1"
+            className="flex items-center gap-2 px-10 py-5 text-xl font-black text-white bg-sky-500 rounded-2xl shadow-[0_6px_0_rgb(14,165,233)] hover:bg-sky-400 transition-all active:shadow-none active:translate-y-1"
           >
-            {t('home.crossword')}
+            <span className="text-2xl">🧩</span> {t('home.crossword')}
           </Link>
           <Link
             href={`/${locale}/audioloop`}
-            className="px-10 py-5 text-xl font-black text-white bg-purple-500 rounded-2xl shadow-[0_6px_0_rgb(168,85,247)] hover:bg-purple-400 transition-all active:shadow-none active:translate-y-1"
+            className="flex items-center gap-2 px-10 py-5 text-xl font-black text-white bg-purple-500 rounded-2xl shadow-[0_6px_0_rgb(168,85,247)] hover:bg-purple-400 transition-all active:shadow-none active:translate-y-1"
           >
-            {t('home.audioloop')}
+            <span className="text-2xl">🎧</span> {t('home.audioloop')}
           </Link>
           <Link
             href={`/${locale}/game/flashcard`}
-            className="px-10 py-5 text-xl font-black text-white bg-emerald-500 rounded-2xl shadow-[0_6px_0_rgb(16,185,129)] hover:bg-emerald-400 transition-all active:shadow-none active:translate-y-1"
+            className="flex items-center gap-2 px-10 py-5 text-xl font-black text-white bg-emerald-500 rounded-2xl shadow-[0_6px_0_rgb(16,185,129)] hover:bg-emerald-400 transition-all active:shadow-none active:translate-y-1"
           >
-            {t('home.flashcard')}
+            <span className="text-2xl">🎴</span> {t('home.flashcard')}
           </Link>
           <Link
             href={`/${locale}/game/definition`}
-            className="px-10 py-5 text-xl font-black text-white bg-amber-500 rounded-2xl shadow-[0_6px_0_rgb(245,158,11)] hover:bg-amber-400 transition-all active:shadow-none active:translate-y-1"
+            className="flex items-center gap-2 px-10 py-5 text-xl font-black text-white bg-amber-500 rounded-2xl shadow-[0_6px_0_rgb(245,158,11)] hover:bg-amber-400 transition-all active:shadow-none active:translate-y-1"
           >
-            {t('home.definition')}
+            <span className="text-2xl">📖</span> {t('home.definition')}
+          </Link>
+          <Link
+            href={`/${locale}/game/random-word`}
+            className="flex items-center gap-2 px-10 py-5 text-xl font-black text-white bg-pink-500 rounded-2xl shadow-[0_6px_0_rgb(236,72,153)] hover:bg-pink-400 transition-all active:shadow-none active:translate-y-1"
+          >
+            <span className="text-2xl">🎲</span> {t('home.random_word', 'Random Word')}
           </Link>
         </div>
       </main>

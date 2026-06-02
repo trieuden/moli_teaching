@@ -38,6 +38,12 @@ export default function Home() {
           >
             Definition
           </Link>
+          <Link 
+            href="/game/random-word" 
+            className="px-10 py-5 text-xl font-black text-white bg-pink-500 rounded-2xl shadow-[0_6px_0_rgb(236,72,153)] hover:bg-pink-400 transition-all active:shadow-none active:translate-y-1"
+          >
+            Random Word
+          </Link>
         </div>
       </main>
     </div>

@@ -4,7 +4,8 @@
     "crossword": "Crossword",
     "audioloop": "Audioloop",
     "flashcard": "Flashcards",
-    "definition": "Definition"
+    "definition": "Definition",
+    "random_word": "Random Word"
   },
   "crossword": {
     "quest_list": "Danh sách câu hỏi",
@@ -38,5 +39,30 @@
     "no_answers": "Chưa có đáp án đúng. Tiếp tục nào! 🚀",
     "invalid_format": "Định dạng file không hợp lệ. Vui lòng dùng mẫu đã xuất.",
     "file_error": "Có lỗi xử lý file."
+  },
+  "random_word": {
+    "random_word": "Random Word",
+    "export_template": "Xuất mẫu",
+    "import_questions": "Nhập dữ liệu",
+    "start": "Bắt đầu",
+    "restart": "Bắt đầu lại",
+    "welcome_title": "Game Random Word!",
+    "welcome_desc": "Hãy nhập file Excel để bắt đầu, hoặc xuất mẫu để tạo dữ liệu của riêng bạn.",
+    "invalid_format": "Định dạng file không hợp lệ. Vui lòng dùng mẫu đã xuất.",
+    "file_error": "Có lỗi xử lý file.",
+    "question": "Câu hỏi",
+    "step": "Bước",
+    "select_definition": "Chọn định nghĩa đúng cho từ: ",
+    "select_type": "Chọn loại từ đúng cho từ: ",
+    "select_vn_meaning": "Chọn nghĩa tiếng Việt đúng cho từ: ",
+    "input_word_from_vn": "Nhập từ tiếng Anh có nghĩa là: ",
+    "input_word_from_def": "Nhập từ có định nghĩa là: ",
+    "answer_placeholder": "NHẬP TỪ...",
+    "submit": "TRẢ LỜI 🚀",
+    "next": "TUYỆT VỜI! TIẾP THEO ✨",
+    "correct": "Đúng rồi!",
+    "wrong": "Sai rồi, thử lại nhé!",
+    "score": "Điểm",
+    "finish": "Hoàn thành!"
   }
 }
