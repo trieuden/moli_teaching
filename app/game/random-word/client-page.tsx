@@ -219,6 +219,7 @@ export default function RandomWordClientPage() {
     if (currentIndex >= questions.length || isAnswered) return;
     const currentQ = questions[currentIndex];
     setInputValue(currentQ.answer);
+    setIsAnswered(true);
   };
 
   const checkInputAnswer = (e?: React.FormEvent) => {
@@ -300,6 +301,18 @@ export default function RandomWordClientPage() {
 
     const isInputType = q.type === QuestionType.INPUT_VN_TO_WORD || q.type === QuestionType.INPUT_DEF_TO_WORD;
 
+    const detailedInfo = (
+      <div className="text-center text-lg font-medium text-slate-700 py-2">
+        <span className="font-bold text-emerald-600">{q.wordData.word}</span>
+        <span className="mx-2 text-slate-400">-</span>
+        <span>{q.wordData.definition}</span>
+        <span className="mx-2 text-slate-400">-</span>
+        <span className="italic text-sky-600">{q.wordData.type}</span>
+        <span className="mx-2 text-slate-400">-</span>
+        <span className="font-bold text-amber-600">{q.wordData.vn_meaning}</span>
+      </div>
+    );
+
     return (
       <div className={`bg-white/90 backdrop-blur-lg p-10 rounded-[40px] shadow-2xl border-t-8 border-yellow-400 transition-transform ${shakeInput ? 'animate-shake' : ''}`}>
         <div className="mb-8 text-center">
@@ -342,13 +355,16 @@ export default function RandomWordClientPage() {
                   </button>
                 </div>
               ) : (
-                <button 
-                  type="button" 
-                  onClick={handleNext} 
-                  className="w-full bg-sky-500 hover:bg-sky-400 text-white font-black py-5 rounded-2xl transition-all shadow-[0_6px_0_rgb(14,165,233)] active:shadow-none active:translate-y-1 text-xl flex items-center justify-center gap-3 animate-pop-in"
-                >
-                  {t('random_word.next')} <span>→</span>
-                </button>
+                <div className="animate-pop-in space-y-6 mt-4">
+                  {detailedInfo}
+                  <button 
+                    type="button" 
+                    onClick={handleNext} 
+                    className="w-full bg-sky-500 hover:bg-sky-400 text-white font-black py-5 rounded-2xl transition-all shadow-[0_6px_0_rgb(14,165,233)] active:shadow-none active:translate-y-1 text-xl flex items-center justify-center gap-3"
+                  >
+                    {t('random_word.next')} <span>→</span>
+                  </button>
+                </div>
               )}
             </div>
           </form>
@@ -378,13 +394,16 @@ export default function RandomWordClientPage() {
               })}
             </div>
             {isAnswered && (
-               <button 
-                type="button" 
-                onClick={handleNext} 
-                className="w-full mt-6 bg-sky-500 hover:bg-sky-400 text-white font-black py-5 rounded-2xl transition-all shadow-[0_6px_0_rgb(14,165,233)] active:shadow-none active:translate-y-1 text-xl flex items-center justify-center gap-3 animate-pop-in"
-               >
-                 {t('random_word.next')} <span>→</span>
-               </button>
+               <div className="animate-pop-in space-y-6 mt-6">
+                 {detailedInfo}
+                 <button 
+                  type="button" 
+                  onClick={handleNext} 
+                  className="w-full bg-sky-500 hover:bg-sky-400 text-white font-black py-5 rounded-2xl transition-all shadow-[0_6px_0_rgb(14,165,233)] active:shadow-none active:translate-y-1 text-xl flex items-center justify-center gap-3"
+                 >
+                   {t('random_word.next')} <span>→</span>
+                 </button>
+               </div>
             )}
           </div>
         )}

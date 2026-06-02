@@ -3,11 +3,28 @@
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const { t } = useTranslation('game');
   const params = useParams();
   const locale = (params?.locale as string) || 'vi';
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <div
+        className="flex flex-col flex-1 items-center justify-center min-h-screen font-sans bg-cover bg-center"
+        style={{ backgroundImage: "url('/images/bg_crossword.jpg')" }}
+      >
+        <div className="absolute inset-0 bg-white/10" />
+      </div>
+    );
+  }
 
   return (
     <div
