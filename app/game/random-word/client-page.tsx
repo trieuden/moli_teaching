@@ -44,6 +44,9 @@ export default function RandomWordClientPage() {
   const [shakeInput, setShakeInput] = useState(false);
   const [isAnswered, setIsAnswered] = useState(false);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [correctCount, setCorrectCount] = useState(0);
+  const [answeredCount, setAnsweredCount] = useState(0);
+  const [hasGuessedWrong, setHasGuessedWrong] = useState(false);
 
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -232,6 +235,8 @@ export default function RandomWordClientPage() {
 
     setQuestions(newQuestions);
     setCurrentIndex(0);
+    setCorrectCount(0);
+    setAnsweredCount(0);
     resetQuestionState();
   };
 
@@ -239,6 +244,7 @@ export default function RandomWordClientPage() {
     setInputValue('');
     setIsAnswered(false);
     setIsCorrect(null);
+    setHasGuessedWrong(false);
   };
 
   const handleShowAnswer = () => {
@@ -246,6 +252,7 @@ export default function RandomWordClientPage() {
     const currentQ = questions[currentIndex];
     setInputValue(currentQ.answer);
     setIsAnswered(true);
+    setAnsweredCount(prev => prev + 1);
   };
 
   const checkInputAnswer = (e?: React.FormEvent) => {
@@ -273,10 +280,13 @@ export default function RandomWordClientPage() {
   const handleCorrect = () => {
     setIsAnswered(true);
     setIsCorrect(true);
+    setAnsweredCount(prev => prev + 1);
+    setCorrectCount(prev => prev + (hasGuessedWrong ? 0 : 1));
     new Audio('/voice/correct.mp3').play().catch(() => {});
   };
 
   const handleWrong = () => {
+    setHasGuessedWrong(true);
     setShakeInput(true);
     setTimeout(() => setShakeInput(false), 300);
     new Audio('/voice/freesound_community-wrong-47985.mp3').play().catch(() => {});
@@ -343,9 +353,14 @@ export default function RandomWordClientPage() {
         }`}
       >
         <div className="mb-8 text-center">
-          <span className="bg-sky-100 text-sky-700 px-4 py-1 rounded-full font-bold text-sm tracking-wider uppercase border border-sky-200">
-            {t('random_word.step')} {currentIndex + 1} / {questions.length}
-          </span>
+          <div className="flex justify-center items-center gap-4">
+            <span className="bg-sky-100 text-sky-700 px-4 py-1 rounded-full font-bold text-sm tracking-wider uppercase border border-sky-200">
+              {t('random_word.step')} {currentIndex + 1} / {questions.length}
+            </span>
+            <span className="bg-emerald-100 text-emerald-700 px-4 py-1 rounded-full font-bold text-sm tracking-wider uppercase border border-emerald-200" title="Số câu đúng / Số câu đã làm">
+              ⭐ {correctCount} / {answeredCount}
+            </span>
+          </div>
           <h3 className="text-xl font-bold mt-6 text-slate-500">{questionTitle}</h3>
           <h2 className="text-4xl font-black mt-2 text-emerald-600 leading-snug drop-shadow-sm uppercase">
             {questionContent}
@@ -609,6 +624,9 @@ export default function RandomWordClientPage() {
               <h1 className="text-5xl font-black text-amber-500 mb-6 drop-shadow-md">
                 🎉 {t('random_word.finish')} 🎉
               </h1>
+              <p className="text-2xl font-bold text-emerald-600 mb-8">
+                Điểm số: {correctCount} / {questions.length}
+              </p>
               <button
                 onClick={() => {
                   setCurrentIndex(-1);
