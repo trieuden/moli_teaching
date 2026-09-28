@@ -69,6 +69,12 @@ export default function Home() {
           >
             <span className="text-2xl">🎲</span> {t('home.random_word', 'Random Word')}
           </Link>
+          <Link
+            href={`/${locale}/trieuden`}
+            className="flex items-center gap-2 px-10 py-5 text-xl font-black text-white bg-slate-800 rounded-2xl shadow-[0_6px_0_rgb(30,41,59)] hover:bg-slate-700 transition-all active:shadow-none active:translate-y-1"
+          >
+            <span className="text-2xl">⚡</span> trieuden
+          </Link>
         </div>
       </main>
     </div>

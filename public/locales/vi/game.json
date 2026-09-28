@@ -5,7 +5,41 @@
     "audioloop": "Audioloop",
     "flashcard": "Flashcards",
     "definition": "Definition",
-    "random_word": "Random Word"
+    "random_word": "Random Word",
+    "preposition": "Prepositions",
+    "trieuden": "trieuden"
+  },
+  "trieuden": {
+    "title": "trieuden ⚡",
+    "subtitle": "Khu vực trò chơi & học tập",
+    "back_home": "Về trang chủ",
+    "preposition_title": "Prepositions",
+    "preposition_desc": "Học và luyện tập giới từ đi kèm với từ vựng tiếng Anh"
+  },
+  "preposition": {
+    "title": "Học Giới Từ 🎯",
+    "export_template": "Xuất mẫu",
+    "import_questions": "Nhập Excel",
+    "shuffle": "Sắp xếp lại 🔀",
+    "results": "Kết quả 📊",
+    "next": "Từ tiếp theo ➡️",
+    "prev": "Từ trước ⬅️",
+    "choose_preposition": "Chọn giới từ đúng đi với:",
+    "correct": "Chính xác! 🎉",
+    "wrong": "Chưa đúng, thử lại nhé! ❌",
+    "meaning": "Nghĩa:",
+    "example": "Ví dụ:",
+    "stats_title": "Bảng Kết Quả Học Tập 🏆",
+    "total_questions": "Tổng số từ:",
+    "correct_first_try": "Đúng lần đầu:",
+    "wrong_attempts": "Số lần chọn sai:",
+    "accuracy": "Độ chính xác:",
+    "word_list": "Danh sách từ đã học",
+    "close": "Đóng",
+    "restart": "Học lại từ đầu",
+    "invalid_format": "Định dạng file không hợp lệ. Vui lòng đảm bảo các cột: Từ, Giới từ, Nghĩa, Ví dụ.",
+    "file_error": "Có lỗi khi đọc file Excel.",
+    "question_progress": "Từ"
   },
   "crossword": {
     "quest_list": "Danh sách câu hỏi",

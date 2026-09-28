@@ -5,7 +5,41 @@
     "audioloop": "Audioloop",
     "flashcard": "Flashcards",
     "definition": "Definition",
-    "random_word": "Random Word"
+    "random_word": "Random Word",
+    "preposition": "Prepositions",
+    "trieuden": "trieuden"
+  },
+  "trieuden": {
+    "title": "trieuden ⚡",
+    "subtitle": "Games & Learning Zone",
+    "back_home": "Back to Home",
+    "preposition_title": "Prepositions",
+    "preposition_desc": "Learn and practice English prepositions with words"
+  },
+  "preposition": {
+    "title": "Prepositions 🎯",
+    "export_template": "Export Template",
+    "import_questions": "Import Excel",
+    "shuffle": "Shuffle 🔀",
+    "results": "Results 📊",
+    "next": "Next Word ➡️",
+    "prev": "Previous ⬅️",
+    "choose_preposition": "Choose the correct preposition for:",
+    "correct": "Correct! 🎉",
+    "wrong": "Not quite, try again! ❌",
+    "meaning": "Meaning:",
+    "example": "Example:",
+    "stats_title": "Learning Results 🏆",
+    "total_questions": "Total words:",
+    "correct_first_try": "First try correct:",
+    "wrong_attempts": "Wrong attempts:",
+    "accuracy": "Accuracy:",
+    "word_list": "Reviewed Words",
+    "close": "Close",
+    "restart": "Restart from Beginning",
+    "invalid_format": "Invalid file format. Please ensure columns: Word, Preposition, Meaning, Example.",
+    "file_error": "Error reading the Excel file.",
+    "question_progress": "Word"
   },
   "crossword": {
     "quest_list": "Quest List",

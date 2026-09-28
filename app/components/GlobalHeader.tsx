@@ -10,6 +10,7 @@ export default function GlobalHeader() {
   const router = useRouter();
   const locale = (params?.locale as string) || 'vi';
   const isHome = pathname === `/${locale}` || pathname === `/${locale}/`;
+  const isFlashcard = pathname?.includes('/game/flashcard');
 
   const switchLocale = () => {
     const newLocale = locale === 'vi' ? 'en' : 'vi';
@@ -41,20 +42,22 @@ export default function GlobalHeader() {
     <nav
       style={{
         position: 'fixed',
-        bottom: '24px',
-        left: '50%',
-        transform: 'translateX(-50%)',
+        bottom: '20px',
+        ...(isFlashcard
+          ? { left: '20px', transform: 'none' }
+          : { left: '50%', transform: 'translateX(-50%)' }),
         zIndex: 50,
         display: 'flex',
         alignItems: 'center',
         gap: '4px',
-        background: 'rgba(255,255,255,0.55)',
+        background: 'rgba(255,255,255,0.75)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
         border: '1.5px solid rgba(255,255,255,0.6)',
         borderRadius: '999px',
         padding: '6px 8px',
         boxShadow: '0 8px 32px rgba(0,0,0,0.14), 0 1.5px 4px rgba(0,0,0,0.06)',
+        transition: 'left 0.3s ease, transform 0.3s ease, bottom 0.3s ease',
       }}
     >
       {/* Home — ẩn khi đang ở trang chủ */}
